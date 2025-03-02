@@ -57,13 +57,11 @@ public class SecurityConfig {
                 "/static/**",
                 "/api/patient/**",
                 "/api/patients/**",
-                "/api/head-to-toe/get/**",      // for getting head to toe assessments by id
-                "/api/head-to-toe/patch/**",
+                "/api/DARP/**",
+                "/api/head-to-toe/**",
                 "/api/summary/**",
                 "/api/summary/patient/**",
                 "/api/transcript/**"
-
-                     // for updating head to toe assessments by id 
                 );       
 
 
@@ -74,10 +72,10 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000")); // Your frontend origin
-                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS
-                    corsConfig.setAllowedHeaders(List.of("*")); // Allow all headers
-                    corsConfig.setAllowCredentials(true); // Allow cookies/auth tokens
+                    corsConfig.setAllowedOrigins(List.of("https://carevoicefrontend-92e5a3f12555.herokuapp.com/", "https://carevoicefrontendexpress-1b06bd543d5f.herokuapp.com/")); // Frontend URL
+                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+                    corsConfig.setAllowedHeaders(List.of("*"));
+                    corsConfig.setAllowCredentials(true);
                     return corsConfig;
                 }))
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs

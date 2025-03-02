@@ -1,5 +1,6 @@
 package com.team7.carevoice.controller;
 
+import com.team7.carevoice.dto.request.ConnectCareLoginRequest;
 import com.team7.carevoice.dto.request.CreateUserRequest;
 import com.team7.carevoice.dto.response.*;
 import com.team7.carevoice.facade.RegistrationFacade;
@@ -28,34 +29,37 @@ public class CareVoiceUserAuthentication {
         this.registrationFacade = registrationFacade;
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody DefaultLoginRequest request) {
-//        logger.info("Login request received for email: {}", request.getEmail());
-//
-//        org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getEmail(),
-//                        request.getPassword()
-//                )
-//        );
-//
-//        String token = authTokenUtil.generateToken(request.getEmail());
-//        logger.info("User {} authenticated successfully.", request.getEmail());
-//
-//        AuthenticationResponse response = new AuthenticationResponse(token, request.getEmail());
-//        return ResponseEntity.ok(new ApiResponse<>(true, "Login successful", response));
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody ConnectCareLoginRequest request) {
+        logger.info("Login request received for email: {}", request.getUsername());
+
+        // Authenticate the user
+        org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+
+        // Generate a token for the embedded app
+        String token = authTokenUtil.generateToken(request.getUsername());
+        logger.info("User {} authenticated successfully.", request.getUsername());
+
+        // Return the token and username to the embedded app
+        AuthenticationResponse response = new AuthenticationResponse(token, request.getUsername());
+        return ResponseEntity.ok(new ApiResponse<>(true, "Login successful", response));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody CreateUserRequest request) {
-        logger.info("Registration request received for email: {}", request.getEmail());
+        logger.info("Registration request received for email: {}", request.getUsername());
 
         CareVoiceUser newUser = registrationFacade.registerUser(request);
 
-        String token = authTokenUtil.generateToken(newUser.getEmail());
-        logger.info("User {} registered successfully.", request.getEmail());
+        String token = authTokenUtil.generateToken(newUser.getUsername());
+        logger.info("User {} registered successfully.", request.getUsername());
 
-        AuthenticationResponse response = new AuthenticationResponse(token, newUser.getEmail());
+        AuthenticationResponse response = new AuthenticationResponse(token, newUser.getUsername());
         return ResponseEntity.ok(new ApiResponse<>(true, "User registered successfully", response));
     }
 }

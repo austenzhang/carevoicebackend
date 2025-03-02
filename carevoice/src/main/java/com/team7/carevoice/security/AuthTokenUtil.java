@@ -103,5 +103,6 @@ public class AuthTokenUtil {
             throw new RuntimeException("Error extracting email from token", e);
         }
     }
+
 }
 

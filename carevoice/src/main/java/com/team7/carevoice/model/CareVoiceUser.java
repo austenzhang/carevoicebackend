@@ -21,7 +21,7 @@ public class CareVoiceUser {
     private List<Patient> patients;
 
     @Column(nullable = false, unique = true) // Ensure email is unique and non-null
-    private String email;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
@@ -34,16 +34,16 @@ public class CareVoiceUser {
     /**
      * Constructs a new AcmePlexUser with the specified email, password, first name, and last name.
      *
-     * @param email     the email of the user (must be unique)
+     * @param username     the email of the user (must be unique)
      * @param password  the encrypted password of the user
      * @param firstName the first name of the user
      * @param lastName  the last name of the user
      */
-    public CareVoiceUser(String email,
+    public CareVoiceUser(String username,
                         String password,
                         String firstName,
                         String lastName) {
-        this.email = email;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,12 +54,12 @@ public class CareVoiceUser {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     public String getPassword() {

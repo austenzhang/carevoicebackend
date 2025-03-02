@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Service layer for managing user profile operations such as registration, profile updates,
  * and billing address management.
  */
-
 @Service
 public class CareVoiceUserProfileService {
 
@@ -27,19 +26,33 @@ public class CareVoiceUserProfileService {
         this.authUserPrincipalService = authUserPrincipalService;
     }
 
+    /**
+     * Retrieves a user by their username.
+     *
+     * @param username the username of the user
+     * @return the CareVoiceUser entity
+     * @throws IllegalArgumentException if the user is not found
+     */
     @Transactional(readOnly = true)
-    public CareVoiceUser getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+    public CareVoiceUser getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
     }
 
+    /**
+     * Registers a new user.
+     *
+     * @param registerRequest the registration request containing user details
+     * @return the newly registered CareVoiceUser entity
+     * @throws IllegalArgumentException if the registration request is invalid or the username is already in use
+     */
     @Transactional
     public CareVoiceUser registerUser(CreateUserRequest registerRequest) {
         validateRegistrationRequest(registerRequest);
-        checkIfEmailExists(registerRequest.getEmail());
+        checkIfUsernameExists(registerRequest.getUsername());
 
         CareVoiceUser newUser = new CareVoiceUser(
-                registerRequest.getEmail(),
+                registerRequest.getUsername(),
                 passwordEncoder.encode(registerRequest.getPassword()),
                 registerRequest.getFirstName(),
                 registerRequest.getLastName()
@@ -48,27 +61,45 @@ public class CareVoiceUserProfileService {
         return userRepository.save(newUser);
     }
 
+    /**
+     * Validates the registration request.
+     *
+     * @param registerRequest the registration request to validate
+     * @throws IllegalArgumentException if the request is null or required fields are missing
+     */
     private void validateRegistrationRequest(CreateUserRequest registerRequest) {
-        if (registerRequest == null || registerRequest.getEmail() == null || registerRequest.getPassword() == null) {
+        if (registerRequest == null || registerRequest.getUsername() == null || registerRequest.getPassword() == null) {
             throw new IllegalArgumentException("Registration details must not be null.");
         }
     }
 
-    private void checkIfEmailExists(String email) {
-        userRepository.findByEmail(email).ifPresent(existing -> {
-            throw new IllegalArgumentException("Email already in use: " + email);
+    /**
+     * Checks if a username already exists in the database.
+     *
+     * @param username the username to check
+     * @throws IllegalArgumentException if the username is already in use
+     */
+    private void checkIfUsernameExists(String username) {
+        userRepository.findByUsername(username).ifPresent(existing -> {
+            throw new IllegalArgumentException("Username already in use: " + username);
         });
     }
 
+    /**
+     * Checks if a string is not blank.
+     *
+     * @param value the string to check
+     * @return true if the string is not blank, false otherwise
+     */
     private boolean isNotBlank(String value) {
         return value != null && !value.isBlank();
     }
 
     /**
-     * Saves or updates the user in the database.
+     * Saves or updates a user in the database.
      *
-     * @param user The user to save or update.
-     * @return The saved user entity.
+     * @param user the user to save or update
+     * @return the saved or updated CareVoiceUser entity
      */
     @Transactional
     public CareVoiceUser save(CareVoiceUser user) {

@@ -21,7 +21,7 @@ public class TranscriptResponse {
             this.createdTime = transcript.getCreatedTime().toString(); 
         }
         this.name = transcript.getName();
-        this.patientId = transcript.getPatientId();
+        this.patientId = transcript.getPatient().getId();
         this.body = transcript.getBody();
     }
 

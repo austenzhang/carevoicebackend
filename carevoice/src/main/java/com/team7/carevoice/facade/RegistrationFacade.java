@@ -33,14 +33,14 @@ public class RegistrationFacade {
     @Transactional
     public CareVoiceUser registerUser(CreateUserRequest registerRequest) {
         try {
-            logger.info("Starting user registration for email: {}", registerRequest.getEmail());
+            logger.info("Starting user registration for email: {}", registerRequest.getUsername());
 
             CareVoiceUser newUser = registerAndFetchUser(registerRequest);
-            logger.info("Registration process completed successfully for user: {}", registerRequest.getEmail());
+            logger.info("Registration process completed successfully for user: {}", registerRequest.getUsername());
             return newUser;
 
         } catch (Exception ex) {
-            logger.error("Unexpected error during registration for user: {}", registerRequest.getEmail(), ex);
+            logger.error("Unexpected error during registration for user: {}", registerRequest.getUsername(), ex);
             throw new IllegalStateException("An unexpected error occurred during registration: " + ex.getMessage());
         }
     }
@@ -48,11 +48,11 @@ public class RegistrationFacade {
     private CareVoiceUser registerAndFetchUser(CreateUserRequest createUserRequest) {
         try {
             userProfileService.registerUser(createUserRequest);
-            CareVoiceUser newUser = userProfileService.getUserByEmail(createUserRequest.getEmail());
-            logger.debug("User created: {}", newUser.getEmail());
+            CareVoiceUser newUser = userProfileService.getUserByUsername(createUserRequest.getUsername());
+            logger.debug("User created: {}", newUser.getUsername());
             return newUser;
         } catch (IllegalArgumentException ex) {
-            logger.error("User registration failed for email: {}", createUserRequest.getEmail(), ex);
+            logger.error("User registration failed for email: {}", createUserRequest.getUsername(), ex);
             throw new IllegalArgumentException("User registration failed: " + ex.getMessage());
         }
     }

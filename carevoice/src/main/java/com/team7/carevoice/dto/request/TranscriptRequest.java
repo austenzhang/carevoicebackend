@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class TranscriptRequest {
 
-    private String createdTime; 
+    private String createdTime;
 
     @NotBlank(message = "Patient ID number is required.")
     private Long patientId;

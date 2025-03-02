@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<CareVoiceUser, Long> {
      * @param email the email of the user
      * @return an Optional containing the user if found, or empty if not found
      */
-    Optional<CareVoiceUser> findByEmail(String email);
+    Optional<CareVoiceUser> findByUsername(String username);
 
     /**
      * Finds a user by their ID.

@@ -1,5 +1,7 @@
 package com.team7.carevoice.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +12,5 @@ public interface TranscriptRepository extends JpaRepository<Transcript, Long> {
 
     // can add custom finder methods here
     // for example:
-    // List<DocumentTranscription> findAllByPatientId(Long patientId);
+    List<Transcript> findByPatientId(Long patientId);
 }

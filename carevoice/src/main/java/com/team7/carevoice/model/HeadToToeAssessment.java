@@ -2,10 +2,9 @@ package com.team7.carevoice.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.*;
 
 @Entity
 public class HeadToToeAssessment {
@@ -15,30 +14,50 @@ public class HeadToToeAssessment {
     private Long id;
     
     private LocalDateTime createdTime;
-    private Long patientId;
-    
+   
+    @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
+    @JsonBackReference
+    private Patient patient;
+
+    @Column(columnDefinition = "TEXT")
     private String neurological;
+    @Column(columnDefinition = "TEXT")
     private String heent; // Head, Eyes, Ears, Nose, Throat
+    @Column(columnDefinition = "TEXT")
     private String respiratory;
+    @Column(columnDefinition = "TEXT")
     private String cardiac;
+
+    @Column(columnDefinition = "TEXT")
     private String peripheralVascular;
+    @Column(columnDefinition = "TEXT")
     private String integumentary;
+    @Column(columnDefinition = "TEXT")
     private String musculoskeletal;
+    @Column(columnDefinition = "TEXT")
     private String gastrointestinal;
+    @Column(columnDefinition = "TEXT")
     private String genitourinary;
+    @Column(columnDefinition = "TEXT")
     private String sleepRest;
+    @Column(columnDefinition = "TEXT")
     private String psychosocial;
+
+    @PrePersist
+    protected void onCreate() {
+    this.createdTime = LocalDateTime.now();
+}
 
     
     public HeadToToeAssessment() {
     }
 
-    public HeadToToeAssessment(LocalDateTime createdTime, Long patientId,
+    public HeadToToeAssessment(Patient patient,
         String neurological, String heent, String respiratory, String cardiac,
         String peripheralVascular, String integumentary, String musculoskeletal,
         String gastrointestinal, String genitourinary, String sleepRest, String psychosocial) {
-            this.createdTime = createdTime;
-            this.patientId = patientId;
+            this.patient = patient; 
             this.neurological = neurological;
             this.heent = heent;
             this.respiratory = respiratory;
@@ -50,6 +69,8 @@ public class HeadToToeAssessment {
             this.genitourinary = genitourinary;
             this.sleepRest = sleepRest;
             this.psychosocial = psychosocial;
+
+       
         
     }
 
@@ -69,12 +90,12 @@ public class HeadToToeAssessment {
         this.createdTime = createdTime; 
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public String getNeurological() {

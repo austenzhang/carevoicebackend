@@ -20,7 +20,7 @@ public class UserPrincipal implements UserDetails {
     private static final Logger logger = LoggerFactory.getLogger(UserPrincipal.class); // Logger instance
 
     private final Long id;
-    private final String email;
+    private final String username;
     private final String password;
     private final String firstName;
     private final String lastName;
@@ -29,22 +29,22 @@ public class UserPrincipal implements UserDetails {
      * Constructs a new {@code UserPrincipal} with the specified user details.
      *
      * @param id          the unique identifier for the user
-     * @param email       the email address of the user, used as a unique identifier for authentication
+     * @param username       the email address of the user, used as a unique identifier for authentication
      * @param password    the encrypted password of the user
      * @param firstName   the user's first name
      * @param lastName    the user's last name
      */
     public UserPrincipal(Long id,
-                         String email,
+                         String username,
                          String password,
                          String firstName,
                          String lastName) {
         this.id = id;
-        this.email = email;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        logger.info("UserPrincipal object created for email: {}", email);
+        logger.info("UserPrincipal object created for username: {}", username);
     }
 
     public Long getId() {
@@ -53,7 +53,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class UserPrincipal implements UserDetails {
     public String toString() {
         return "UserPrincipal{" +
                 "id=" + id +
-                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
@@ -116,13 +116,13 @@ public class UserPrincipal implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         UserPrincipal that = (UserPrincipal) o;
         return Objects.equals(id, that.id) &&
-                Objects.equals(email, that.email) &&
+                Objects.equals(username, that.username) &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName);
+        return Objects.hash(id, username, firstName, lastName);
     }
 }

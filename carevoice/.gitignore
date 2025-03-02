@@ -6,6 +6,7 @@ target/
 
 # log files
 *.log
+/logs/
 
 
 ### STS ###

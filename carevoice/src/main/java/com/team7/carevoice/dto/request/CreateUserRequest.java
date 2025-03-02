@@ -10,7 +10,7 @@ public class CreateUserRequest {
 
     @NotBlank(message = "Email is required.")
     @Email(message = "Invalid email format.")
-    private String email;
+    private String username;
 
     @NotBlank(message = "Password is required.")
     private String password;
@@ -21,12 +21,12 @@ public class CreateUserRequest {
     @NotBlank(message = "Last name is required.")
     private String lastName;
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     public String getPassword() {

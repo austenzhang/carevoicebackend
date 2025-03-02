@@ -2,9 +2,17 @@ package com.team7.carevoice.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,23 +20,32 @@ import jakarta.persistence.Table;
 public class Transcript {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String patientName;
-
-
-    private Long patientId; // placeholder since we don't have a patient model yet
     private LocalDateTime createdTime;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "patient_id")
+	@JsonBackReference
+	private Patient patient;
 
     @Column(columnDefinition = "TEXT") // for large texts
     private String body;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdTime = LocalDateTime.now();
+    }
+
     // Constructors
     public Transcript() {}
 
-    public Transcript(Long patientId, String name, LocalDateTime createdTime, String type, String body) {
-        this.patientId = patientId;
+    public Transcript(Patient patient, String name, String type, String body) {
+        this.patient = patient;
         this.patientName = name;
-        this.createdTime = createdTime;
+        this.createdTime = LocalDateTime.now();
         this.body = body;
 
     }
@@ -48,12 +65,12 @@ public class Transcript {
         this.id = id;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public LocalDateTime getCreatedTime() {

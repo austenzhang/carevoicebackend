@@ -45,7 +45,7 @@ public class AuthUserPrincipalService {
         }
 
         // Use the email from UserPrincipal to fetch AcmePlexUser
-        return userRepository.findByEmail(currentUser.getUsername())
+        return userRepository.findByUsername(currentUser.getUsername())
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + currentUser.getUsername()));
     }
 

@@ -1,5 +1,6 @@
 package com.team7.carevoice.controller;
 
+import com.team7.carevoice.dto.response.ApiResponse;
 import com.team7.carevoice.model.Summary;
 import com.team7.carevoice.services.SummaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,14 @@ public class SummaryController {
     private SummaryService summaryService;
 
     @GetMapping("/{summaryId}")
-    public Map<String, Object> getSummaryById(@PathVariable Long summaryId){
+    public ApiResponse<?> getSummaryById(@PathVariable Long summaryId){
         Summary summary = summaryService.getSummaryById(summaryId);
         Map<String, Object> response = new HashMap<>();
         response.put("createdTime", summary.getCreatedTime().toString());
         response.put("patientName", summary.getPatient().getName());
         response.put("patientId", summary.getPatient().getId());
         response.put("body", summary.getBody());
-        return response;
+        return new ApiResponse<>(true, "Retrieved summary", response);
     }
 
     @PatchMapping("/{summaryId}")

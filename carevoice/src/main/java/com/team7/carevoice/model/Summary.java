@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Summary {
 
@@ -11,12 +13,16 @@ public class Summary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long summaryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "patient_id")
+    @JsonBackReference
     private Patient patient;
 
     private LocalDateTime createdTime;
+
+    @Column(columnDefinition = "TEXT")
     private String body;
+
     @PrePersist
     protected void onCreate() {
         this.createdTime = LocalDateTime.now();

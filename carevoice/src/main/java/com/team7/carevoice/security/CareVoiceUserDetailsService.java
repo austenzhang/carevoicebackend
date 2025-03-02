@@ -27,16 +27,16 @@ public class CareVoiceUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    @Cacheable(value = "userProfileCache", key = "#email")
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
+    @Cacheable(value = "userProfileCache", key = "#username")
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
                 .map(user -> new UserPrincipal(
                         user.getId(),
-                        user.getEmail(),
+                        user.getUsername(),
                         user.getPassword(),
                         user.getFirstName(),
                         user.getLastName()))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     }
 }
 
