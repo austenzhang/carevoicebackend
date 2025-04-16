@@ -1,6 +1,6 @@
-# Carevoice Backend - A University of Calgary Nursing-Engineering Hackathon Project
+# Carevoice Back End - A University of Calgary Nursing-Engineering Hackathon Project
 
-This is the backend repository for Carevoice. The backend was developed using Spring Boot.
+This is the back end repository for Carevoice. The backend was developed using Spring Boot.
 
 On March 1, 2025, a joint Hackathon was conducted between the Nursing and Software Engineering M.Eng students.
 
